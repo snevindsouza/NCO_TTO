@@ -30,6 +30,6 @@ nco x1 (
 );
   
 // List all unused inputs to prevent warnings
-wire _unused = &{ena, clk, rst_n, 1'b0};
+wire _unused = &{ena, clk, rst_n, uio_in, ui_in[7:3], 1'b0};
 
 endmodule
