@@ -1,7 +1,7 @@
 module tt_um_nco(
-	input clk_50MHz, reset,
-	input [3:0] signal_out,    // Select line
-	output reg [7:0] wave_out  // Output to external DAC
+  input   wire        clk_50MHz, reset,
+  input   wire  [2:0] signal_out,        // Select line
+  output  reg   [7:0] wave_out           // Output to external DAC
 );
 reg [4:0] addr;				       // Address for the LUT (5-bit, 0-31)
 reg [7:0] wave_lut [0:31];	 // Lookup tables for different waveforms
@@ -284,12 +284,12 @@ always @(posedge clk_50MHz or posedge reset) begin
         wave_lut[30] <= 72;
         wave_lut[31] <= 72;
       end
-      default: begin
+       default: begin
         for (i=0;i<=31;i=i+1)
           wave_lut[i] <= 'b0;
       end
     endcase
-	end
+  end
 end
 
 always @(posedge clk_50MHz or posedge reset) begin
@@ -297,9 +297,9 @@ always @(posedge clk_50MHz or posedge reset) begin
     addr <= 'b0;
     wave_out <= 'b0;
   end else begin
-		addr <= addr + 5'd1;
-		wave_out <= wave_lut[addr];
-	end
+    addr <= addr + 5'd1;
+    wave_out <= wave_lut[addr];
+  end
 end
 
 endmodule 
