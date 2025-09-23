@@ -1,10 +1,10 @@
 module nco(
-  input clk_50MHz, reset,
-  input [2:0] signal_out,    // Select line
-  output reg [7:0] wave_out  // Output to external DAC
+  input   wire        clk_50MHz, reset,
+  input   wire  [2:0] signal_out,    // Select line
+  output  reg   [7:0] wave_out       // Output to external DAC
 );
-reg [4:0] addr;				       // Address for the LUT (5-bit, 0-31)
-reg [7:0] wave_lut [0:31];	 // Lookup tables for different waveforms
+reg [4:0] addr;              // Address for the LUT (5-bit, 0-31)
+reg [7:0] wave_lut [0:31];   // Lookup tables for different waveforms
 integer i;
 always @(posedge clk_50MHz or negedge reset) begin
   if (!reset) begin
