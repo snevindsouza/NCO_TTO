@@ -7,34 +7,43 @@ from cocotb.triggers import ClockCycles
 
 
 @cocotb.test()
-async def test_project(dut):
-    dut._log.info("Start")
+async def test_nco_project(dut):
+    dut._log.info("Starting NCO Testbench")
 
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, units="us")
+    # Start 50MHz clock → 20ns period
+    clock = Clock(dut.clk, 20, units="ns")
     cocotb.start_soon(clock.start())
 
-    # Reset
-    dut._log.info("Reset")
+    # Initialize signals
     dut.ena.value = 1
     dut.ui_in.value = 0
     dut.uio_in.value = 0
     dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
+
+    # Apply reset for few cycles
+    await ClockCycles(dut.clk, 5)
     dut.rst_n.value = 1
+    dut._log.info("Reset released")
 
-    dut._log.info("Test project behavior")
+    # Test 1: Set control word = 3'b001
+    dut.ui_in.value = 0b00000001
+    await ClockCycles(dut.clk, 100)
+    val1 = int(dut.uo_out.value)
+    dut._log.info(f"Wave output for control=1: {val1}")
 
-    # Set the input values you want to test
-    dut.ui_in.value = 20
-    dut.uio_in.value = 30
+    # Test 2: Set control word = 3'b010
+    dut.ui_in.value = 0b00000010
+    await ClockCycles(dut.clk, 100)
+    val2 = int(dut.uo_out.value)
+    dut._log.info(f"Wave output for control=2: {val2}")
 
-    # Wait for one clock cycle to see the output values
-    await ClockCycles(dut.clk, 1)
+    # Optional: Ensure outputs differ (frequency should change)
+    assert val1 != val2, "Waveform output did not change with frequency control!"
 
-    # The following assersion is just an example of how to check the output values.
-    # Change it to match the actual expected output of your module:
-    assert dut.uo_out.value == 50
+    # Test 3: Sweep through all control values
+    for i in range(8):
+        dut.ui_in.value = i
+        await ClockCycles(dut.clk, 50)
+        dut._log.info(f"ui_in={i:03b}, uo_out={int(dut.uo_out.value)}")
 
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
+    dut._log.info("NCO test completed successfully")
