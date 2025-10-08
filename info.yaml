@@ -1,7 +1,7 @@
 # Tiny Tapeout project information
 project:
   title:        "Numerically Controlled Oscillator"      # Project title
-  author:       "Snevin Leoneel Dsouza"      # Your name
+  author:       "Snevin Leoneel Dsouza, Kishan Revankar, Suhan Rai K"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "A versatile NCO, capable of generating a diverse range of waveforms such as sine, cosine, triangular, square, gaussian chirplet and ecg waves."      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
