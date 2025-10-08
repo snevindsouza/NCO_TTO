@@ -13,8 +13,7 @@ The project implements a fully digital NCO/DDS core that generates different wav
 Each clock cycle, the phase accumulator adds a frequency tuning word (FTW) to determine the waveform phase. This phase value is then mapped to an amplitude using the ROM. The resulting 8-bit digital waveform is sent to the output, either as parallel digital data or through a PWM/resistor-ladder DAC for analog output. The waveform type is selected using simple control pins.
 
 ## How to test
-
-You can test the design in simulation or on hardware.
+We can test the design in simulation or on hardware.
 In simulation, run the provided testbench to verify frequency sweep, waveform selection, and edge cases.
 On hardware, connect the 8-bit output to an external R-2R resistor ladder DAC and view the generated waveform on an oscilloscope. Change the waveform select pins to observe different shapes (sine, triangle, etc.) and vary the FTW to adjust frequency.
 
